@@ -290,6 +290,18 @@
     font-size: 1rem;
 }
 
+
+.dashboard-footer {
+    text-align: center;
+    margin-top: 30px;
+    padding-top: 15px;
+    border-top: 1px dashed #e2e8f0;
+    /* Tạo một đường gạch đứt mờ phân cách nhẹ nhàng */
+    color: #a0aec0;
+    /* Màu chữ xám nhẹ tinh tế */
+    font-size: 0.85rem;
+}
+
 /* MOBILE */
 @media (max-width: 992px) {
 

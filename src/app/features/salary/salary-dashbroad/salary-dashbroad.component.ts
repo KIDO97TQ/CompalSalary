@@ -43,7 +43,7 @@ export class SalaryDashbroadComponent implements OnInit {
   khoiTaoDanhSachThangHeThong() {
     const sysdate = new Date();
     const namHienTai = sysdate.getFullYear();
-    const thangHienTaiRaw = sysdate.getMonth() + 1;
+    const thangHienTaiRaw = sysdate.getMonth() + 1; // getMonth() trả về 0-11, nên cần +1 để có tháng thực tế
 
     this.thangDuocChon = `${namHienTai}${thangHienTaiRaw.toString().padStart(2, '0')}`;
 

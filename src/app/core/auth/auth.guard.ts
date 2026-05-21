@@ -12,6 +12,6 @@ export const authGuard: CanActivateFn = (route, state) => {
         Promise.resolve().then(() => {
             router.navigate(['/login']);
         });
-        return false; // Chặn không cho nạp component xem lương
+        return false;
     }
 };
