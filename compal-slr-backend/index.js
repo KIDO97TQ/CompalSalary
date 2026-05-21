@@ -148,6 +148,10 @@ app.post('/api/salary/query', async (req, res) => {
     }
 });
 
+app.get('/ping', (req, res) => {
+    res.status(200).send('pong');
+});
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
