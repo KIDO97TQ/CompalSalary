@@ -1,295 +1,189 @@
-.salary-container {
+:host {
+    display: block;
+    background-color: #f4f6f9;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     min-height: 100vh;
-    padding: 35px;
-    background:
-        radial-gradient(circle at top left, #1e293b 0%, transparent 25%),
-        radial-gradient(circle at bottom right, #0f172a 0%, transparent 25%),
-        linear-gradient(135deg, #020617, #0f172a);
-    font-family: 'Segoe UI', sans-serif;
-    color: white;
+    padding: 20px;
 }
 
-/* HEADER */
+.salary-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
 .salary-header {
-    position: relative;
-    overflow: hidden;
-    padding: 30px;
-    border-radius: 28px;
-    margin-bottom: 28px;
-    background: rgba(255, 255, 255, 0.08);
-    backdrop-filter: blur(18px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    box-shadow:
-        0 10px 40px rgba(0, 0, 0, 0.4),
-        inset 0 1px 0 rgba(255, 255, 255, 0.08);
-}
-
-.salary-header::before {
-    content: "";
-    position: absolute;
-    width: 250px;
-    height: 250px;
-    background: rgba(59, 130, 246, 0.25);
-    border-radius: 50%;
-    top: -120px;
-    right: -60px;
-    filter: blur(40px);
+    margin-bottom: 20px;
+    background: white;
+    padding: 15px 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .salary-header h2 {
-    position: relative;
     margin: 0;
-    font-size: 30px;
-    font-weight: 800;
-    letter-spacing: 1px;
+    color: #2c3e50;
+    font-size: 1.3rem;
 }
 
 .salary-month {
-    position: relative;
-    margin-top: 10px;
-    color: rgba(255, 255, 255, 0.75);
-    font-size: 15px;
+    margin: 0;
+    color: #7f8c8d;
 }
 
-/* GRID */
 .dashboard-grid {
     display: grid;
-    grid-template-columns: 2.2fr 1fr;
-    gap: 24px;
-    align-items: start;
+    grid-template-columns: 7fr 4fr;
+    gap: 20px;
 }
 
-/* TABLE CARD */
+@media (max-width: 992px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Cấu hình bảng */
 .salary-table-card {
+    background: white;
+    border-radius: 8px;
     overflow: hidden;
-    border-radius: 28px;
-    background: rgba(255, 255, 255, 0.06);
-    backdrop-filter: blur(18px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    box-shadow:
-        0 10px 35px rgba(0, 0, 0, 0.35);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
 }
 
-/* TABLE */
 .salary-table {
     width: 100%;
     border-collapse: collapse;
-}
-
-.salary-table thead {
-    background: rgba(255, 255, 255, 0.08);
+    text-align: left;
 }
 
 .salary-table th {
-    padding: 20px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    font-size: 13px;
-    color: #93c5fd;
-    font-weight: 700;
+    background-color: #34495e;
+    color: white;
+    padding: 12px 15px;
+    font-weight: 600;
+    font-size: 0.95rem;
 }
 
 .salary-table td {
-    padding: 18px 20px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    transition: all 0.25s ease;
-}
-
-.salary-table tbody tr:hover {
-    background: rgba(255, 255, 255, 0.04);
-    transform: scale(1.01);
+    padding: 10px 15px;
+    border-bottom: 1px solid #edf2f7;
+    color: #2d3748;
+    font-size: 0.9rem;
 }
 
 .text-right {
     text-align: right;
 }
 
-.font-weight-bold {
-    font-weight: 700;
+/* Các loại dòng đặc biệt */
+.row-header {
+    background-color: #ebf8ff;
+    font-weight: bold;
+    color: #2b6cb0 !important;
 }
 
-/* SPECIAL ROWS */
-.row-header {
-    background: linear-gradient(90deg,
-            rgba(59, 130, 246, 0.25),
-            rgba(59, 130, 246, 0.05));
-    color: #60a5fa;
-    font-weight: 800;
+.row-header td {
+    color: #2b6cb0 !important;
+    font-size: 0.95rem;
+    border-bottom: 2px solid #bee3f8;
+    padding-top: 15px;
+
 }
 
 .row-total {
-    background: linear-gradient(90deg,
-            rgba(16, 185, 129, 0.25),
-            rgba(16, 185, 129, 0.05));
-    color: #34d399;
-    font-size: 17px;
-    font-weight: 800;
+    background-color: #f7fafc;
+    font-weight: bold;
 }
 
+.row-total td {
+    color: #dd6b20;
+    border-top: 2px dashed #e2e8f0;
+    border-bottom: 2px solid #e2e8f0;
+}
+
+/* Làm mờ các dòng bằng 0 */
 .row-zero {
-    opacity: 0.35;
+    opacity: 0.45;
 }
 
-.header-icon {
-    margin-right: 10px;
+.row-zero:hover {
+    opacity: 1;
 }
 
-/* SIDEBAR */
+/* Cấu hình Sidebar thông tin */
 .summary-sidebar {
     display: flex;
     flex-direction: column;
-    gap: 22px;
+    gap: 15px;
 }
 
-/* INFO CARDS */
 .info-card {
-    position: relative;
-    overflow: hidden;
-    padding: 22px;
-    border-radius: 26px;
-    background: rgba(255, 255, 255, 0.07);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
     display: flex;
     align-items: center;
-    gap: 18px;
-    transition: 0.3s ease;
-    box-shadow:
-        0 10px 30px rgba(0, 0, 0, 0.35);
-}
-
-.info-card:hover {
-    transform: translateY(-6px) scale(1.02);
-}
-
-.info-card::before {
-    content: "";
-    position: absolute;
-    width: 120px;
-    height: 120px;
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 50%;
-    top: -40px;
-    right: -30px;
+    gap: 15px;
 }
 
 .card-icon {
-    width: 72px;
-    height: 72px;
-    border-radius: 22px;
-    background: linear-gradient(135deg, #2563eb, #7c3aed);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 34px;
-    box-shadow:
-        0 5px 20px rgba(37, 99, 235, 0.45);
-}
-
-.card-content {
-    position: relative;
-    z-index: 2;
+    font-size: 2rem;
 }
 
 .card-content h3 {
-    margin: 0;
-    font-size: 15px;
-    color: rgba(255, 255, 255, 0.7);
-    font-weight: 500;
+    margin: 0 0 5px 0;
+    font-size: 0.9rem;
+    color: #718096;
 }
 
 .highlight-value {
-    margin-top: 8px;
-    font-size: 28px;
-    font-weight: 800;
-    color: #60a5fa;
+    margin: 0;
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #2d3748;
+}
+
+/* Card Thực Lĩnh */
+.net-salary-card {
+    background: linear-gradient(135deg, #2ecc71, #27ae60);
+    color: white;
+}
+
+.net-salary-card .card-content h3 {
+    color: #e8f8f5;
 }
 
 .net-value {
-    margin-top: 8px;
-    font-size: 30px;
-    font-weight: 900;
-    background: linear-gradient(90deg, #4ade80, #22c55e);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    margin: 0;
+    font-size: 1.8rem;
+    font-weight: 800;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
 }
 
-/* NOTE CARD */
+/* Thẻ ghi chú */
 .note-card {
-    position: relative;
-    overflow: hidden;
-    padding: 24px;
-    border-radius: 26px;
-    background: linear-gradient(135deg,
-            rgba(249, 115, 22, 0.18),
-            rgba(255, 255, 255, 0.05));
-    border: 1px solid rgba(249, 115, 22, 0.2);
-    backdrop-filter: blur(18px);
-    box-shadow:
-        0 10px 30px rgba(0, 0, 0, 0.3);
+    background: #fffaf0;
+    border-left: 4px solid #dd6b20;
+    padding: 15px;
+    border-radius: 0 8px 8px 0;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
 }
 
 .note-title {
-    font-size: 16px;
-    font-weight: 800;
-    margin-bottom: 14px;
-    color: #fb923c;
+    font-weight: bold;
+    color: #dd6b20;
+    margin-bottom: 8px;
 }
 
 .note-body {
-    color: rgba(255, 255, 255, 0.8);
-    line-height: 1.8;
-    font-size: 14px;
-}
-
-/* SCROLLBAR */
-::-webkit-scrollbar {
-    width: 10px;
-}
-
-::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.15);
-    border-radius: 20px;
-}
-
-/* Style cho bộ chọn tháng */
-.month-selector-wrapper {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 0.9rem;
-    color: #4a5568;
-}
-
-.month-selector-wrapper select {
-    padding: 5px 10px;
     font-size: 0.88rem;
-    font-weight: 600;
-    color: #2d3748;
-    border: 1px solid #cbd5e0;
-    border-radius: 4px;
-    background-color: #fff;
-    cursor: pointer;
-    outline: none;
-    transition: border-color 0.2s;
+    color: #4a5568;
+    line-height: 1.5;
 }
-
-.month-selector-wrapper select:focus {
-    border-color: #3182ce;
-    box-shadow: 0 0 0 1px #3182ce;
-}
-
-/* Thẻ thông báo trống */
-.no-data-card {
-    background: white;
-    padding: 40px;
-    text-align: center;
-    border-radius: 6px;
-    color: #718096;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-    font-size: 1rem;
-}
-
 
 .dashboard-footer {
     text-align: center;
@@ -302,29 +196,61 @@
     font-size: 0.85rem;
 }
 
-/* MOBILE */
-@media (max-width: 992px) {
+/* --- CẤU HÌNH HỘP CHỌN THÁNG (MONTH SELECTOR) --- */
+.month-selector-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
 
-    .salary-container {
-        padding: 20px;
+.month-selector-wrapper label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #4a5568;
+    white-space: nowrap;
+    /* Không cho chữ "Chọn kỳ lương:" bị xuống dòng bừa bãi */
+}
+
+.month-selector-wrapper select {
+    padding: 8px 16px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #2d3748;
+    background-color: #ffffff;
+    border: 1.5px solid #cbd5e0;
+    border-radius: 6px;
+    cursor: pointer;
+    outline: none;
+    transition: all 0.2s ease-in-out;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+/* Hiệu ứng khi di chuột vào hoặc click chọn */
+.month-selector-wrapper select:hover {
+    border-color: #3182ce;
+    /* Đổi viền sang màu xanh mượt */
+    background-color: #f7fafc;
+}
+
+.month-selector-wrapper select:focus {
+    border-color: #3182ce;
+}
+
+@media (max-width: 600px) {
+    .salary-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
     }
 
-    .dashboard-grid {
-        grid-template-columns: 1fr;
+    .month-selector-wrapper {
+        width: 100%;
+        justify-content: space-between;
     }
 
-    .salary-header h2 {
-        font-size: 22px;
-    }
-
-    .salary-table th,
-    .salary-table td {
-        padding: 14px;
-        font-size: 13px;
-    }
-
-    .highlight-value,
-    .net-value {
-        font-size: 24px;
+    .month-selector-wrapper select {
+        flex: 1;
+        max-width: 200px;
+        text-align: center;
     }
 }

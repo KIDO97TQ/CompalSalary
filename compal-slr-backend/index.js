@@ -5,7 +5,7 @@ import axios from 'axios';
 import https from 'https';
 import dotenv from "dotenv";
 import path from 'path';
-import { fileURLToPath } from 'url'; // Ngòi nổ chữa lỗi crash nằm ở dòng này!
+import { fileURLToPath } from 'url';
 
 dotenv.config();
 const app = express();
@@ -41,7 +41,6 @@ async function loginAsync(username, password) {
     });
 
     const responseText = response.data;
-    //console.log("👉 Phản hồi từ hệ thống Compal:", responseText);
 
     if (String(responseText).trim().includes("工號或密码错误，登录失败！")) {
         return { success: false, message: String(responseText).trim() };
