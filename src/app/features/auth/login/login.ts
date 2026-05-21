@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../core/auth/auth.service';
 import { HttpClient } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
-import { environment } from '../../../../environments/environment.production';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-login',
@@ -48,7 +48,7 @@ export class LoginComponent implements OnInit {
     const loginData = this.loginForm.value;
 
     this.http.post<{ success: boolean; message: string; clientId: string }>(
-      'http://localhost:3000/api/auth/login',
+      `${this.apiUrl}/auth/login`,
       loginData
     ).subscribe({
       next: (response) => {
