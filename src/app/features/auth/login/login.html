@@ -1,0 +1,68 @@
+<div class="login-container">
+    <div class="login-card">
+
+        <!-- Phần Header của Form -->
+        <div class="login-header">
+            <div class="logo-icon">
+                <i class="fas fa-wallet"></i> <!-- Có thể thay bằng icon hoặc logo công ty -->
+            </div>
+            <h2>SALARY SYSTEM</h2>
+            <p>Vui lòng đăng nhập để kiểm tra phiếu lương của bạn</p>
+        </div>
+
+        <!-- Form Đăng Nhập -->
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+
+            <!-- Ô nhập Tài khoản -->
+            <div class="input-group" [class.error]="isFieldInvalid('username')">
+                <label for="username">Tài khoản</label>
+                <div class="input-wrapper">
+                    <span class="input-icon">👤</span>
+                    <input type="text" id="username" formControlName="username" placeholder="Nhập mã nhân viên"
+                        autocomplete="off" />
+                </div>
+                @if (isFieldInvalid('username')) {
+                <span class="error-text">Tài khoản không được để trống</span>
+                }
+            </div>
+
+            <!-- Ô nhập Mật khẩu -->
+            <div class="input-group" [class.error]="isFieldInvalid('password')">
+                <label for="password">Mật khẩu</label>
+                <div class="input-wrapper">
+                    <span class="input-icon">🔒</span>
+                    <input type="password" id="password" formControlName="password" placeholder="••••••••" />
+                </div>
+                @if (isFieldInvalid('password')) {
+                <span class="error-text">Mật khẩu phải có ít nhất 3 ký tự</span>
+                }
+            </div>
+
+            <!-- Ghi nhớ đăng nhập & Quên mật khẩu -->
+            <!-- <div class="form-actions">
+                <label class="remember-me">
+                    <input type="checkbox" formControlName="rememberMe">
+                    <span class="checkmark"></span>
+                    Ghi nhớ đăng nhập
+                </label>
+                <a href="#" class="forgot-password">Quên mật khẩu?</a>
+            </div> -->
+
+            <!-- Nút Đăng nhập -->
+            <button type="submit" class="btn-login" [disabled]="isLoading">
+                @if (isLoading) {
+                <span class="spinner"></span> Đang xử lý...
+                } @else {
+                Đăng Nhập
+                }
+            </button>
+
+        </form>
+
+        <!-- Phần Footer nhỏ -->
+        <div class="login-footer">
+            <p>&copy; 2026 IT Department. All rights reserved.</p>
+        </div>
+
+    </div>
+</div>

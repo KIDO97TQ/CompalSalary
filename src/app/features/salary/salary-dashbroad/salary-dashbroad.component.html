@@ -1,0 +1,81 @@
+<div class="salary-container">
+    <!-- Thanh tiêu đề tích hợp nút chọn tháng -->
+    <div class="salary-header">
+        <h2><i class="fas fa-wallet"></i> CHI TIẾT BẢNG LƯƠNG NHÂN VIÊN</h2>
+
+        <!-- HỘP CHỌN THÁNG NẰM ĐÂY -->
+        <div class="month-selector-wrapper">
+            <label for="monthSelect">Chọn kỳ lương: </label>
+            <select id="monthSelect" [ngModel]="thangDuocChon" (ngModelChange)="onMonthChange($event)">
+                <option *ngFor="let m of danhSachThang" [value]="m.value">
+                    {{ m.label }}
+                </option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Nếu có dữ liệu thì hiện bảng, nếu không thì báo trống -->
+    <div class="dashboard-grid" *ngIf="salaryData.length > 0; else noDataBlock">
+        <!-- KHỐI CHÍNH: BẢNG LƯƠNG CHI TIẾT -->
+        <div class="salary-table-card">
+            <table class="salary-table">
+                <thead>
+                    <tr>
+                        <th>Hạng mục công việc / Phụ cấp</th>
+                        <th class="text-right">Giá trị / Số tiền (VNĐ)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of salaryData" [ngClass]="{
+                'row-header': isHeader(item.simplify),
+                'row-total': isTotalRow(item.simplify),
+                'row-zero': item.datainfo === '0' && !isHeader(item.simplify)
+              }">
+                        <td>
+                            <span *ngIf="isHeader(item.simplify)" class="header-icon">📌</span>
+                            {{ item.simplify }}
+                        </td>
+                        <td class="text-right font-weight-bold">
+                            <ng-container *ngIf="item.datainfo !== ''">
+                                {{ item.datainfo }}
+                            </ng-container>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- KHỐI PHỤ: THÔNG TIN TỔNG QUAN & GHI CHÚ -->
+        <div class="summary-sidebar">
+            <div class="info-card shift-card">
+                <div class="card-icon">⏱️</div>
+                <div class="card-content">
+                    <h3>Công tiêu chuẩn</h3>
+                    <p class="highlight-value">{{ congTieuChuan }} Giờ</p>
+                </div>
+            </div>
+
+            <div class="info-card net-salary-card">
+                <div class="card-icon">💰</div>
+                <div class="card-content">
+                    <h3>Thực Lĩnh Cuối Cùng</h3>
+                    <p class="net-value">{{ thucLinh }} VNĐ</p>
+                </div>
+            </div>
+
+            <div class="note-card" *ngIf="ghiChu !== ''">
+                <div class="note-title">📑 Thông báo & Ghi chú giải trình:</div>
+                <div class="note-body">
+                    <p style="white-space: pre-line;">{{ ghiChu }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <ng-template #noDataBlock>
+        <div class="no-data-card">
+            🚫 Không tìm thấy dữ liệu bảng lương cho mã nhân viên <strong>{{maNhanVien}}</strong> trong kỳ này. Vui lòng
+            chọn tháng khác!
+        </div>
+    </ng-template>
+</div>
