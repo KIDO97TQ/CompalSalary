@@ -47,17 +47,21 @@ export class LoginComponent implements OnInit {
     this.isLoading = true;
     const loginData = this.loginForm.value;
 
-    this.http.post<{ success: boolean; message: string; clientId: string }>(
+    // 🌟 Nhận thêm trường 'token' trả về từ Backend mới nâng cấp
+    this.http.post<{ success: boolean; message: string; token: string }>(
       `${this.apiUrl}/auth/login`,
       loginData
     ).subscribe({
       next: (response) => {
         this.isLoading = false;
         this.toastr.success('Đăng nhập thành công!', 'Thông báo');
-        this.authService.login(loginData.username, loginData.password);
-        this.router.navigate(['/salary'], {
-          queryParams: { employeeId: loginData.username }
-        });
+
+        if (response.token) {
+          this.authService.login(response.token);
+        }
+
+        this.router.navigate(['/salary']);
+
         this.cdr.detectChanges();
       },
       error: (err) => {
@@ -67,7 +71,6 @@ export class LoginComponent implements OnInit {
           this.toastr.error(err.error?.message || 'Tài khoản hoặc mật khẩu không chính xác!', 'Đăng nhập thất bại');
         } else {
           this.toastr.error('Không thể kết nối đến máy chủ. Vui lòng thử lại sau!', 'Đăng nhập thất bại');
-          this.cdr.detectChanges();
         }
       }
     });

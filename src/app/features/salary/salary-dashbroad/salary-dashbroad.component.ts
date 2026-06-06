@@ -1,9 +1,10 @@
 import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router'; // 🌟 Import thêm Router để đá người dùng ra nếu không có Token
+import { HttpClient, HttpHeaders } from '@angular/common/http'; // 🌟 Import thêm HttpHeaders
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { environment } from '../../../../environments/environment';
+import { AuthService } from '../../../core/auth/auth.service';
 
 @Component({
   selector: 'app-salary-dashbroad',
@@ -13,17 +14,17 @@ import { environment } from '../../../../environments/environment';
   styleUrl: './salary-dashbroad.component.css',
 })
 export class SalaryDashbroadComponent implements OnInit {
-  private route = inject(ActivatedRoute);
+  private router = inject(Router); // 🌟 Inject Router
   private http = inject(HttpClient);
   private cdr = inject(ChangeDetectorRef);
   private apiUrl = environment.apiUrl;
+  private authService = inject(AuthService);
 
-  maNhanVien: string = '';
   salaryData: any[] = [];
-
   thangNamHienTai: string = '';
   thangDuocChon: string = '';
   danhSachThang: any[] = [];
+  maNhanVien: string = '';
 
   congTieuChuan: string = '0';
   thucLinh: string = '0';
@@ -32,45 +33,39 @@ export class SalaryDashbroadComponent implements OnInit {
   ngOnInit() {
     this.khoiTaoDanhSachThangHeThong();
 
-    this.route.queryParams.subscribe(params => {
-      this.maNhanVien = params['employeeId'];
-      if (this.maNhanVien) {
-        this.fetchSalary(this.maNhanVien, this.thangDuocChon);
+    const token = this.authService.getToken();
+    if (!token) {
+      this.router.navigate(['/login']);
+      return;
+    }
+
+    if (token) {
+      try {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        this.maNhanVien = payload.username || "Thành viên";
+      } catch (e) {
+        this.maNhanVien = "Thành viên";
       }
+    }
+
+    this.fetchSalary(this.thangDuocChon);
+  }
+
+  fetchSalary(thangNam: string) {
+    const token = this.authService.getToken();
+    if (!token) {
+      this.router.navigate(['/login']);
+      return;
+    }
+
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
     });
-  }
 
-  khoiTaoDanhSachThangHeThong() {
-    const sysdate = new Date();
-    const namHienTai = sysdate.getFullYear();
-    const thangHienTaiRaw = sysdate.getMonth() + 1; // getMonth() trả về 0-11, nên cần +1 để có tháng thực tế
-
-    this.thangDuocChon = `${namHienTai}${thangHienTaiRaw.toString().padStart(2, '0')}`;
-
-    const mangTam = [];
-    for (let i = 12; i >= 1; i--) {
-      const chuoiThang = i.toString().padStart(2, '0');
-      mangTam.push({
-        value: `${namHienTai}${chuoiThang}`,
-        label: `Tháng ${chuoiThang} / ${namHienTai}`
-      });
-    }
-
-    this.danhSachThang = mangTam;
-  }
-
-  onMonthChange(newMonth: string) {
-    this.thangDuocChon = newMonth;
-    if (this.maNhanVien) {
-      this.fetchSalary(this.maNhanVien, this.thangDuocChon);
-    }
-  }
-
-  fetchSalary(maNV: string, thangNam: string) {
-    this.http.post<any>(`${this.apiUrl}/salary/query`, {
-      emp: maNV,
-      dateYM: thangNam
-    }).subscribe({
+    this.http.post<any>(`${this.apiUrl}/salary/query`,
+      { dateYM: thangNam },
+      { headers: headers }
+    ).subscribe({
       next: (res) => {
         if (res.success) {
           this.salaryData = res.data;
@@ -83,6 +78,7 @@ export class SalaryDashbroadComponent implements OnInit {
           this.ghiChu = this.findDataInArray('Ghi chú');
 
           this.cdr.detectChanges();
+
         }
       },
       error: (err) => {
@@ -91,10 +87,41 @@ export class SalaryDashbroadComponent implements OnInit {
         this.thangNamHienTai = '';
         this.congTieuChuan = '0';
         this.thucLinh = '0';
-        this.ghiChu = 'Tháng này chưa có dữ liệu hoặc lỗi kết nối!';
+
+        if (err.status === 401 || err.status === 403) {
+          this.ghiChu = 'Phiên đăng nhập hết hạn, vui lòng đăng nhập lại!';
+          this.authService.logout();
+          this.router.navigate(['/login']);
+        } else {
+          this.ghiChu = 'Tháng này chưa có dữ liệu hoặc lỗi kết nối đến máy chủ!';
+        }
         this.cdr.detectChanges();
       }
     });
+  }
+
+  khoiTaoDanhSachThangHeThong() {
+    const sysdate = new Date();
+    const namHienTai = sysdate.getFullYear();
+    const thangHienTaiRaw = sysdate.getMonth() + 1;
+
+    this.thangDuocChon = `${namHienTai}${thangHienTaiRaw.toString().padStart(2, '0')}`;
+
+    const mangTam = [];
+    for (let i = 12; i >= 1; i--) {
+      const chuoiThang = i.toString().padStart(2, '0');
+      mangTam.push({
+        value: `${namHienTai}${chuoiThang}`,
+        label: `Tháng ${chuoiThang} / ${namHienTai}`
+      });
+    }
+    this.danhSachThang = mangTam;
+  }
+
+
+  onMonthChange(newMonth: string) {
+    this.thangDuocChon = newMonth;
+    this.fetchSalary(this.thangDuocChon);
   }
 
   private findDataInArray(simplifyName: string): string {

@@ -1,3 +1,4 @@
+
 import { Injectable } from '@angular/core';
 
 @Injectable({ providedIn: 'root' })
@@ -7,11 +8,15 @@ export class AuthService {
         return !!sessionStorage.getItem('user_token');
     }
 
-    login(username: string, password: string) {
-        sessionStorage.setItem('user_token', 'fake-jwt-token-cho-phien-nay');
+    login(token: string) {
+        sessionStorage.setItem('user_token', token);
     }
 
     logout() {
         sessionStorage.removeItem('user_token');
+    }
+
+    getToken(): string | null {
+        return sessionStorage.getItem('user_token');
     }
 }
